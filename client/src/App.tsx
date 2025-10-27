@@ -1,14 +1,17 @@
-
+import { Footer, Navbar, Services, Transactions, Welcome } from './components';
 function App() {
 
 
   return (
-    <>
-      <div>
-        <p className="text-3xl text-blue-800">Hello World</p>
+    <div className="min-h-screen">
+      <div className="gradient-bg-welcome">
+        <Navbar />
+        <Welcome />
       </div>
-
-    </>
+      <Services />
+      <Transactions />
+      <Footer />     
+    </div>
   )
 }
 
