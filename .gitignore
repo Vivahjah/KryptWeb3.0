@@ -2,3 +2,16 @@ client/node_modules/
 smart_contract/node_modules/
 
 
+# Hardhat Build Artifacts
+smart_contract/artifacts
+
+# Hardhat compilation (v2) support directory
+smart_contract/cache
+
+# Typechain output
+smart_contract/types
+
+# Hardhat coverage reports
+smart_contract/coverage
+
+
