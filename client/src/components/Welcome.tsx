@@ -50,10 +50,10 @@ const connectWallet = () => {
     console.log("Connect Wallet");
     };
 const handleSubmit = () => {
-    console.log("Connect Wallet");
+    // console.log("Connect Wallet");
     };
 const handleChange = () => {
-    console.log("Connect Wallet");
+    // console.log("Connect Wallet");
     };
 
   return (
@@ -70,7 +70,7 @@ const handleChange = () => {
             <button
               type="button"
               onClick={connectWallet}
-              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] px-6 py-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
             >
               <AiFillPlayCircle className="text-white mr-2" />
               <p className="text-white text-base font-semibold">
