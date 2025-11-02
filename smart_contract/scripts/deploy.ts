@@ -6,8 +6,15 @@ import { ethers } from "hardhat";
 const main = async () => {
 const Transactions = await ethers.getContractFactory("Transactions");
 const transactions = await Transactions.deploy();
+await transactions.waitForDeployment();
+ const address = await transactions.getAddress();
 
-console.log(`Transactions contract deployed to: ${transactions.address}`);
+
+ console.log(`Transaction ${address}`);
+
+
+
+
   // Deployment logic goes here
 }
 
@@ -26,3 +33,5 @@ const runMain = async () => {
 
 
 runMain()
+
+//0x59D608e9d3DF2F89771CfcC91AE334E78cCD8385
