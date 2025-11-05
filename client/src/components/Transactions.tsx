@@ -1,9 +1,6 @@
 import { useContext } from "react";
 
 import { TransactionContext } from "../context/TransactionContext";
-
-// import useFetch from "../hooks/useFetch";
-import dummyData from "../utils/dummyData";
 import { shortenAddress } from "../utils/shortenAddress";
 import useFetch from "../hooks/useFetch";
 
@@ -14,7 +11,7 @@ interface TransactionsCardProps {
   message: string;
   keyword: string;
   amount: string;
-  url?: string;
+  url: string;
 }
 
 
@@ -77,7 +74,7 @@ const Transactions = () => {
         )}
 
         <div className="flex flex-wrap justify-center items-center mt-10">
-          {transactions.reverse().map((transaction, i) => (
+          {transactions.reverse().map((transaction : TransactionsCardProps, i: number) => (
             <TransactionsCard key={i} {...transaction} />
           ))}
         </div>

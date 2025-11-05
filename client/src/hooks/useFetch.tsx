@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const APIKEY = import.meta.env.VITE_GIPHY_API;
+console.log({APIKEY});
 
 interface UseFetchProps {
   keyword: string;
