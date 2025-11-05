@@ -3,10 +3,12 @@ import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import Loader from "./Loader";
+import { useContext } from "react";
 
-// import { TransactionContext } from "../context/TransactionContext";
-// import { shortenAddress } from "../utils/shortenAddress";
-// import { Loader } from ".";
+import { toast } from "sonner";
+import { shortenAddress } from "../utils/shortenAddress";
+import { TransactionContext } from "../context/TransactionContext";
+
 
 // Define the Input props interface
 interface InputProps {
@@ -19,7 +21,7 @@ interface InputProps {
 
 const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
 
-const Input = ({ placeholder, name, type, value, handleChange } : InputProps) => (
+const Input = ({ placeholder, name, type, value, handleChange }: InputProps) => (
   <input
     placeholder={placeholder}
     type={type}
@@ -31,30 +33,28 @@ const Input = ({ placeholder, name, type, value, handleChange } : InputProps) =>
 );
 
 const Welcome = () => {
-//   const { currentAccount, connectWallet, handleChange, sendTransaction, formData, isLoading } = useContext(TransactionContext);
+  const { connectWallet, isLoading,  currentAccount, formData, sendTransaction, handleChange } = useContext(TransactionContext)
 
-//   const handleSubmit = (e) => {
-//     const { addressTo, amount, keyword, message } = formData;
 
-//     e.preventDefault();
 
-//     if (!addressTo || !amount || !keyword || !message) return;
+  const handleSubmit = (e: React.FormEvent) => {
+    const { addressTo, amount, keyword, message } = formData;
 
-//     sendTransaction();
-//   };
+    e.preventDefault();
 
-const currentAccount = null;
-const isLoading = false;
+    if (!addressTo || !amount || !keyword || !message) {
+      toast.error("Please fill in all fields");
+      return;
 
-const connectWallet = () => {
-    console.log("Connect Wallet");
-    };
-const handleSubmit = () => {
-    // console.log("Connect Wallet");
-    };
-const handleChange = () => {
-    // console.log("Connect Wallet");
-    };
+    }
+    sendTransaction();
+
+
+  };
+
+
+
+
 
   return (
     <div className="flex w-full justify-center items-center">
@@ -108,9 +108,8 @@ const handleChange = () => {
               </div>
               <div>
                 <p className="text-white font-light text-sm">
-                  {/* {shortenAddress(currentAccount)} */}
+                  {!currentAccount ? "Address" : shortenAddress(currentAccount)}
 
-                  0x......3647
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum
