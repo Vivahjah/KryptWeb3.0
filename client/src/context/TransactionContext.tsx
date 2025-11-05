@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
@@ -41,6 +42,7 @@ const getEthereumContract = async (): Promise<ethers.Contract> => {
 
 export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState<string | null>(null);
+    const [transactions, setTransactions] = useState<Array<any>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [transactionCount, setTransactionCount] = useState(
         localStorage.getItem("transactionCount") ? Number(localStorage.getItem("transactionCount")) : 0
@@ -69,6 +71,7 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
             // if account is found set it to current account
             if (accounts.length) {
+                fetchAllTransactions();
                 setCurrentAccount(accounts[0]);
 
                 //get all transactions here
@@ -85,6 +88,42 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
         }
 
+    };
+
+    const checkIfTransactionsExists = async () => {
+        try {
+            const transactionContract = await getEthereumContract();
+            const transactionsCount = await transactionContract.getTransactionCount();
+            window.localStorage.setItem("transactionCount", transactionsCount.toString());
+        } catch (error) {
+            toast.error("An error occurred while checking transactions");
+            console.error(error);
+        }
+    };
+
+    const fetchAllTransactions = async () => {
+        try {
+            if (!window.ethereum) {
+                toast.error("Please install MetaMask");
+                return;
+            }
+            const transactionContract = await getEthereumContract();
+            const availableTransactions = await transactionContract.getAllTransactions();
+            console.log({availableTransactions});
+           
+            const structuredTransactions = availableTransactions.map((transaction: any) => ({
+                addressTo: transaction.receiver,
+                addressFrom: transaction.sender,
+                timestamp: new Date(Number(transaction.timestamp) * 1000).toLocaleString(),
+                message: transaction.message,
+                keyword: transaction.keyword,
+                amount: ethers.formatEther(transaction.amount),
+            }));
+            setTransactions(structuredTransactions);
+            console.log({structuredTransactions});
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const connectWallet = async () => {
@@ -164,10 +203,12 @@ export const TransactionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     useEffect(() => {
         checkIfWalletIsConnected();
+        checkIfTransactionsExists();
+        fetchAllTransactions();
     }, []);
 
     return (
-        <TransactionContext.Provider value={{ transactionCount, getEthereumContract, connectWallet, currentAccount, formData, setFormData, isLoading, handleChange, sendTransaction }}>
+        <TransactionContext.Provider value={{ transactions, transactionCount, getEthereumContract, connectWallet, currentAccount, formData, setFormData, isLoading, handleChange, sendTransaction }}>
             {children}
         </TransactionContext.Provider>
     );

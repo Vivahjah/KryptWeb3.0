@@ -16,4 +16,6 @@ smart_contract/coverage
 
 smart_contract/.env
 
+client/.env
+
 
